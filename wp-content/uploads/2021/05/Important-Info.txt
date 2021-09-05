@@ -1,0 +1,29 @@
+____________
+Global Fonts:
+____________
+Primary: Roboto
+Secondary: Roboto Slab
+Text: Roboto
+Accent: Cookie
+----------------------
+
+______________
+Global Colours:
+______________
+Primary:  #5D7A17 (Dark Green)
+Secondary:#8FBB1E (Light Green)
+Text:     #000000 (Black)
+Accent:   #EF9A15 (Orange)
+
+----------------------
+
+Featured Shortcodes:
+___________________
+Category:
+[products limit="8" columns="4" category="vegetables"]
+
+Featured:
+[products limit="4" columns="4" visibility="featured"]
+
+WooCommerce Order Tracking:
+[woocommerce_order_tracking]

@@ -1,0 +1,32 @@
+<script type="text/html" id="pfw-common-edit">
+    <label for="display_title">Display title</label>
+    <input type="text" name="display_title" value="<%= element.display_title %>" id="display_title">
+
+    <label for="column_priority">Column priority</label>
+    <input type="number" id="column_priority" value="<%= element.column_priority %>" name="column_priority">
+
+    <label for="column_width">Column width</label>
+    <input type="number" id="column_width" value="<%= element.column_width %>" name="column_width">
+
+    <label for="sortable">Sortable</label>
+    <select name="sortable" id="sortable">
+        <option value="true"  <%= element.sortable == 'true' ? 'selected' : ''  %>  >Yes</option>
+        <option "<%= element.sortable != 'false' ? 'selected' : ''  %>" value="false">No</option>
+    </select>
+</script>
+<script type"text/html" id="pfw-add-to-cart-edit">
+   <label for="simple_product_text">Simple product text</label>
+   <input id="simple_product_text" name="simple_product_text" value="<%= element.simple_product_text %>" />
+
+   <label for="variable_product_text">Variable product text</label>
+   <input id="variable_product_text" name="variable_product_text" value="<%= element.variable_product_text %>" />
+
+   <label for="grouped_product_text">Grouped product text</label>
+   <input id="grouped_product_text" name="grouped_product_text" value="<%= element.grouped_product_text %>" />
+   
+   <label for="external_product_text">External/Affiliate product text</label>
+   <input id="external_product_text" name="external_product_text" value="<%= element.external_product_text %>" />
+
+
+
+</script>

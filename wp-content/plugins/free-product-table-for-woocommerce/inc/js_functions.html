@@ -1,0 +1,98 @@
+<script>
+
+    function pfw_init_table(tableID, tableData, tableColumns, columnDefs, filterString, hasCheckbox)
+    {
+        console.log('columndefs are ', columnDefs);
+        console.log('columns are', tableColumns);
+        console.log('table data e', tableData);
+        //save the current table to the global array of tables
+        pfw_tables[tableID + '_wrapper'] = jQuery(tableID).DataTable({
+            data: tableData,
+            columns: tableColumns,
+            dom: '<"pfw-top"l<"pfw-filters">f>r<"pfw-table-wrapper"t><"pfw-bottom"ip><"clear"><"pfw-bulk-add">',
+            responsive: { details: { display: jQuery.fn.dataTable.Responsive.display.childRow } },
+            columnDefs: columnDefs,
+            language: {
+                lengthMenu: "Show _MENU_"
+            }
+        });
+
+        let category_column_index = 0;
+        let rating_column_index = 0;
+        let price_column_index = 0;
+
+        console.log('table data is: ', tableData);
+
+        for (let i = 0; i < tableColumns.length; i++)
+        {
+            if (tableColumns[i].data === 'raw_categories')
+                category_column_index = i;
+            else if (tableColumns[i].data === 'raw_rating')
+                rating_column_index = i;
+            else if (tableColumns[i].data === 'raw_price')
+                price_column_index = i;
+        }
+
+
+        jQuery.fn.dataTable.ext.search.push(
+            function(settings, data, dataIndex){
+                let min_price = (jQuery(tableID + '_wrapper .pfw-filters .pfw-price-greater-than').val());
+                let max_price = (jQuery(tableID + '_wrapper .pfw-filters .pfw-price-less-than').val());
+                let min_rating = (jQuery(tableID + '_wrapper .pfw-filters .pfw-rating-filter').val());
+                let selected_categories = jQuery(tableID + '_wrapper .pfw-filters .pfw-filter-categories select').val();
+
+                console.log(data);
+                //get data from the column
+                let price = parseInt(data[price_column_index]);
+                let rating = parseInt(data[rating_column_index]);
+                let categories = data[category_column_index].split(",");
+
+                let match_price = true;
+                let match_rating = true;
+                let match_category = true;
+
+                if (typeof min_price !== 'undefined' && typeof max_price !== 'undefined')
+                {
+                    if ( min_price !== '' &&  max_price !== '')
+                    {
+                        console.log('min and max price are set');
+                        match_price = price >= parseInt(min_price) && price <= parseInt(max_price);
+                    }
+                    else if( min_price !== '')
+                    {
+                        console.log('only min price is set');
+                        match_price = price >= parseInt(min_price);
+                    }
+                    else if ( max_price !== '')
+                    {
+
+                        match_price = price <= parseInt(max_price);
+                    }
+                }
+
+
+
+                if (typeof min_rating !== 'undefined' && min_rating !== '')
+                    match_rating = rating >= min_rating;
+
+                if (typeof selected_categories !== 'undefined' && selected_categories != null && selected_categories.length > 0)
+                {
+                    match_category = _.intersection(selected_categories, categories).length > 0;
+                }
+
+
+                return (match_rating && match_category && match_price);
+
+            }
+        );
+
+        jQuery(function(){
+            jQuery(tableID + '_wrapper .pfw-filters').html(decodeURIComponent(filterString));
+            if (hasCheckbox)
+                jQuery(tableID + '_wrapper .pfw-bulk-add').html('<button class="pfw-bulk-add-button">Add selected products to cart</button>');
+
+        });
+
+    }
+
+</script>
